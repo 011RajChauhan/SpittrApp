@@ -22,5 +22,11 @@ public class SpittleRepositoryImpl implements SpittleRepositoryDao {
 		}
 		return spittles;
 	}
+	@Override
+	public Spittle findOne(long spittleId) {
+		// TODO Auto-generated method stub
+		Spittle spittle = new Spittle(" "+spittleId,new Date());
+		return spittle;
+	}
 
 }

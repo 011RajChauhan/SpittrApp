@@ -6,4 +6,6 @@ import spittr.Spittle;
 
 public interface SpittleRepositoryDao {
 	List<Spittle>findSpittles(long max,int count);
+
+	Spittle findOne(long spittleId);
 }
