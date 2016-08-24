@@ -1,8 +1,11 @@
 package spittr.web;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import spittr.Spitter;
 import spittr.data.SpitterRepositoryDao;
-import spittr.data.SpitterRepositoryDaoImpl;
 
 @Controller
 @RequestMapping("/spitter")
@@ -25,11 +27,15 @@ public class SpitterController {
 		return "registerForm";
 	}
 	@RequestMapping(value="/register",method=RequestMethod.POST)
-	public String processRegistrationForm(@RequestParam("firstName")String firstName,
+	public String processRegistrationForm(@Valid Spitter spitter,Errors errors,@RequestParam("firstName")String firstName,
 											@RequestParam("lastName")String lastName,
 											@RequestParam("userName")String userName,
 											@RequestParam("password")String password){
-		Spitter spitter = new Spitter();
+		//if form has errors return to registrationForm
+		if(errors.hasErrors()){
+			return "registerForm";
+		}else{
+		 spitter = new Spitter();
 		spitter.setFirstName(firstName);
 		spitter.setLastName(lastName);
 		spitter.setUserName(userName);
@@ -38,7 +44,9 @@ public class SpitterController {
 		/*redirect is handled by the internalResourceViewResolver in a manner 
 		 * that it doesn't handle it as a logical 
 		view name, insted it redirects the request to the controller for further processing.*/
+		System.out.println("here");
 		return "redirect:/spitter/"+spitter.getUserName();
+		}
 	}
 	//redirected request handling here, path variable is used here to take username in placeholder.
 	
